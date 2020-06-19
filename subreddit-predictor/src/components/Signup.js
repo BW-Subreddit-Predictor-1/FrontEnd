@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import axios from "axios";
 import { Link } from "react-router-dom";
-import { Form, Label, Input, Button, FormGroup } from "reactstrap";
+import { FormGroup, Form, Label, Input, Button } from "reactstrap";
 // import * as yup from "yup";
 
 const Signup = (e) => {
@@ -10,10 +10,11 @@ const Signup = (e) => {
     lastName: "",
     email: "",
     password: "",
-    confirmationPassword: "",
+    password_confirmation: "",
   });
 
   const handleSubmit = (e) => {
+    console.log("form submitted");
     e.preventDefault();
   };
 
@@ -55,6 +56,7 @@ const Signup = (e) => {
               id="firstName"
               value={user.firstName}
               onChange={handleChange}
+              required
             />
           </FormGroup>
           <FormGroup>
@@ -66,16 +68,18 @@ const Signup = (e) => {
               id="lastName"
               value={user.lastName}
               onChange={handleChange}
+              required
             />
           </FormGroup>
           <FormGroup>
             <Label>Email</Label>
             <Input
               type="text"
-              placeholder="Email"
               name="email"
+              placeholder="Email"
               value={user.email}
               onChange={handleChange}
+              required
             />
           </FormGroup>
           <FormGroup>
@@ -87,16 +91,17 @@ const Signup = (e) => {
               id="password"
               value={user.password}
               onChange={handleChange}
+              required
             />
           </FormGroup>
           <FormGroup>
             <Label>Confirmation Password</Label>
             <Input
               type="password"
-              name="password"
-              placeholder="Password"
+              name="password_confirmation"
+              placeholder="Password Confirmation"
               id="password"
-              value={user.password}
+              value={user.password_confirmation}
               onChange={handleChange}
             />
           </FormGroup>
