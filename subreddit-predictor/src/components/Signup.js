@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import axios from "axios";
-import { Link } from "react-router-dom";
-import { FormGroup, Form, Label, Input, Button } from "reactstrap";
+import { Route, Link } from "react-router-dom";
+import { Navbar, FormGroup, Form, Label, Input, Button } from "reactstrap";
 // import * as yup from "yup";
 
 const Signup = (e) => {
@@ -31,15 +31,15 @@ const Signup = (e) => {
 
   return (
     <>
-      <nav>
+      <Navbar>
         <div>
-          <h1>Post Here: Subreddit - Predictor</h1>
+          <h1 style={{ color: "white" }}>Post Here: Subreddit - Predictor</h1>
           <Link to="/">Home</Link>
           <Link to="/">About</Link>
           <Link to="/">Log In</Link>
           <Link to="/">Sign Up</Link>
         </div>
-      </nav>
+      </Navbar>
       <div>
         <h1>SIGN UP</h1>
         <h4>
