@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-// import axios from "axios";
+import React, { useState, useContext } from "react";
+import axiosWithAuth from '../utils/axiosWithAuth';
+import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import {
   Navbar,
@@ -10,17 +11,30 @@ import {
   Button,
   FormGroup,
 } from "reactstrap";
+import { RedditContext } from '../contexts/RedditContext';
 // import * as yup from "yup";
 
 const Login = () => {
+
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const { setLoggedState } = useContext(RedditContext);
+  const { push } = useHistory();
+
+  const login = e => {
     e.preventDefault();
-  };
+    axiosWithAuth()
+      .post('login', user)
+      .then(res => {
+        localStorage.setItem('token', res.data.payload)
+        push('/userHomePage')
+      })
+      setLoggedState(true)
+      localStorage.setItem('loggedState', true)
+  }
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -43,7 +57,7 @@ const Login = () => {
         <Link to={"/"}>Sign Up</Link>
       </Navbar>
 
-      <Form onSubmit={handleSubmit} style={{ width: "20%", margin: "0 auto" }}>
+      <Form onSubmit={login} style={{ width: "20%", margin: "0 auto" }}>
         <h1>LOG IN</h1>
         <FormGroup>
           {/* left align text */}
@@ -73,7 +87,7 @@ const Login = () => {
         </FormGroup>
         <Button type="submit">Log In</Button>
         <h5>
-          New to Reddit? <Link to="/">SIGN UP</Link>
+          New to Reddit? <Link to="/signup">SIGN UP</Link>
         </h5>
       </Form>
     </>

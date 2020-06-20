@@ -15,7 +15,7 @@ const Search = () => {
           type="textarea"
           name="search"
           placeholder="Type what you wish to search..."
-          value="searchData.search"
+          // value={searchData.search}
         />
         <Button onClick={Modal}>Search</Button>
       </Form>
