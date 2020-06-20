@@ -1,21 +1,12 @@
 import React, { useState, useContext } from "react";
-import axiosWithAuth from '../utils/axiosWithAuth';
-import { useHistory } from 'react-router-dom';
+import axiosWithAuth from "../utils/axiosWithAuth";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {
-  Navbar,
-  Card,
-  Form,
-  Label,
-  Input,
-  Button,
-  FormGroup,
-} from "reactstrap";
-import { RedditContext } from '../contexts/RedditContext';
+import { Form, Input, Button, FormGroup } from "reactstrap";
+import { RedditContext } from "../contexts/RedditContext";
 // import * as yup from "yup";
 
 const Login = () => {
-
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -24,17 +15,17 @@ const Login = () => {
   const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
 
-  const login = e => {
+  const login = (e) => {
     e.preventDefault();
     axiosWithAuth()
-      .post('login', user)
-      .then(res => {
-        localStorage.setItem('token', res.data.payload)
-        push('/userHomePage')
-      })
-      setLoggedState(true)
-      localStorage.setItem('loggedState', true)
-  }
+      .post("login", user)
+      .then((res) => {
+        localStorage.setItem("token", res.data.payload);
+        push("/userHomePage");
+      });
+    setLoggedState(true);
+    localStorage.setItem("loggedState", true);
+  };
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -57,12 +48,9 @@ const Login = () => {
         <Link to={"/signup"}>Sign Up</Link>
       </nav>
 
-<h1 className='loginh1'>Log In</h1>
+      <h1 className="loginh1">Log In</h1>
       <Form onSubmit={login} style={{ width: "20%", margin: "0 auto" }}>
-        
         <FormGroup>
-          {/* left align text */}
-      
           <Input
             type="text"
             name="email"
@@ -74,8 +62,6 @@ const Login = () => {
           />
         </FormGroup>
         <FormGroup>
-          {/* left align text */}
-         
           <Input
             type="password"
             name="password"
@@ -86,14 +72,15 @@ const Login = () => {
             required
           />
         </FormGroup>
-        <Button type="submit" disabled={!user}>Log In</Button>
+        <Button type="submit" disabled={!user}>
+          Log In
+        </Button>
 
-        <div className='loginBottom'>
-             <h5>
-          New to Reddit? <Link to="/signup">SIGN UP</Link>
-        </h5>
+        <div className="loginBottom">
+          <h5>
+            New to Reddit? <Link to="/signup">SIGN UP</Link>
+          </h5>
         </div>
-     
       </Form>
     </>
   );
