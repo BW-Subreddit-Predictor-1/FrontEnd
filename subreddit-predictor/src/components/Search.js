@@ -1,23 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Label, Button, Modal } from "reactstrap";
 // import * as yup from "yup";
+import axios from 'axios';
 
 const Search = () => {
+
+  const [search, setSearch ] = useState('');
+
+  const handleChange = e => {
+    setSearch({
+      ...search, [e.target.name] : e.target.value
+    })
+  }
+
+  const getPost = e => {
+    e.preventDefault();
+       axios
+      .get(`https://localhost:5000/api/${search}`)
+      .then(res => {
+        setSearch(res.data)
+      })
+      .catch(err => {
+        console.error(err.message, err.response)
+      })
+  }
+
+
   return (
     <>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
+      <Form style={{ width: "50%", margin: "0 auto" }}
+        onSubmit={getPost}
       >
         <Label>Search</Label>
         <Input
           type="textarea"
           name="search"
           placeholder="Type what you wish to search..."
-          // value={searchData.search}
+          onChange={handleChange}
+          restricted
         />
-        <Button onClick={Modal}>Search</Button>
+        <div className='spacer'></div>
+        <Button className='searchButton' disabled={!search} onClick={Modal}>Search</Button>
       </Form>
     </>
   );
