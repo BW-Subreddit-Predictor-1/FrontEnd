@@ -4,8 +4,7 @@
 
 body {
   background-image:
-  /* linear-gradient(to top, rgba(41, 70, 150, 0.212), rgba(117, 19, 93, 0.342)), */
-  url('https://www.toptal.com/designers/subtlepatterns/patterns/dark-honeycomb.png');
+  /* linear-gradient(to top, rgba(41, 70, 150, 0.212), rgba(117, 19, 93, 0.342)), */ url("https://www.toptal.com/designers/subtlepatterns/patterns/dark-honeycomb.png");
   height: 100vh;
   background-attachment: fixed;
 }
@@ -44,7 +43,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
 
 nav {
   width: 100%;
@@ -108,4 +106,10 @@ h1 {
 
 .spacer {
   padding-top: 15px;
+}
+
+.userHomePgh1 {
+  font-size: 30px;
+  padding-bottom: 20px;
+  color: white;
 }
