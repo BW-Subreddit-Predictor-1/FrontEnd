@@ -4,27 +4,38 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, FormGroup } from "reactstrap";
 import { RedditContext } from "../contexts/RedditContext";
-// import * as yup from "yup";
+import * as yup from "yup";
 
-const Login = () => {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+const initialLoginState = {
+  email: "",
+  password: "",
+};
 
+const Login = (e) => {
+  const [user, setUser] = useState(initialLoginState);
   const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
+  const schema = yup.object().shape({
+    email: yup.string().required().min(2),
+    password: yup.string().required().min(8),
+  });
 
   const login = (e) => {
-    e.preventDefault();
-    axiosWithAuth()
-      .post("login", user)
-      .then((res) => {
-        localStorage.setItem("token", res.data.payload);
-        push("/userHomePage");
-      });
-    setLoggedState(true);
-    localStorage.setItem("loggedState", true);
+    schema.validate(user).then(() => {
+      e.preventDefault();
+      axiosWithAuth()
+        .post("login", user)
+        .then((res) => {
+          localStorage.setItem("token", res.data.payload);
+          push("/userHomePage");
+        })
+        .catch((error) => {
+          console.log("Error loggin in!", error);
+        });
+
+      setLoggedState(true);
+      localStorage.setItem("loggedState", true);
+    });
   };
 
   const handleChange = (e) => {
@@ -72,7 +83,7 @@ const Login = () => {
             required
           />
         </FormGroup>
-        <Button type="submit" disabled={!user}>
+        <Button to="/userHomePage" type="submit" disabled={!user}>
           Log In
         </Button>
 
