@@ -3,15 +3,14 @@ import { Form, Label, Input, Button, FormGroup } from "reactstrap";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { RedditContext } from "../contexts/RedditContext";
 
-const UserPost = () => {
-  const initialState = {
-    title: "",
-    post: "",
-  };
+const initialState = {
+  title: "",
+  post: "",
+};
 
+const UserPost = () => {
   const [postInput, setPostInput] = useState(initialState);
   const { post, setPost } = useContext(RedditContext);
-
   const handleChange = (e) => {
     setPostInput({
       ...postInput,
@@ -24,7 +23,7 @@ const UserPost = () => {
     axiosWithAuth()
       .post(`http://localhost:5000/api/`, postInput)
       .then((res) => {
-        setPost(res.data);
+        setPost(res.data, "This is your posted data");
       })
       .catch((err) => {
         console.error(err.message, err.response);

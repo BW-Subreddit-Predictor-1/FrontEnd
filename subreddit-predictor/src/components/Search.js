@@ -1,48 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Label, Button, Modal } from "reactstrap";
-// import * as yup from "yup";
-import axios from 'axios';
+import axios from "axios";
+import { SearchResults } from "./SearchResults.js";
 
 const Search = () => {
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch ] = useState('');
-
-  const handleChange = e => {
+  const handleChange = (e) => {
     setSearch({
-      ...search, [e.target.name] : e.target.value
-    })
-  }
+      ...search,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const getPost = e => {
+  const getPost = (e) => {
     e.preventDefault();
-       axios
+    axios
       .get(`https://localhost:5000/api/${search}`)
-      .then(res => {
-        setSearch(res.data)
+      .then((res) => {
+        setSearch(res.data);
       })
-      .catch(err => {
-        console.error(err.message, err.response)
-      })
-  }
-
+      .catch((err) => {
+        console.error(err.message, err.response);
+      });
+  };
 
   return (
     <>
-      <Form style={{ width: "50%", margin: "0 auto" }}
-        onSubmit={getPost}
-      >
-        <Label>Search</Label>
-        <Input
-          type="textarea"
-          name="search"
-          placeholder="Type what you wish to search..."
-          onChange={handleChange}
-          restricted
-        />
-        <div className='spacer'></div>
-        <Button className='searchButton' disabled={!search} onClick={Modal}>Search</Button>
+      <Form style={{ width: "50%", margin: "0 auto" }} onSubmit={getPost}>
+        <Label>
+          Search
+          <Input
+            type="textarea"
+            name="search"
+            placeholder="Type what you wish to search..."
+            onChange={handleChange}
+            restricted
+          />
+        </Label>
+        <div className="spacer"></div>
+        <Button className="searchButton" disabled={!search} onClick={Modal}>
+          Search
+        </Button>
       </Form>
     </>
   );
 };
+
 export default Search;
