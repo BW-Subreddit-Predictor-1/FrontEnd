@@ -16,8 +16,13 @@ const Login = (e) => {
   const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
   const schema = yup.object().shape({
-    email: yup.string().required().min(2),
-    password: yup.string().required().min(8),
+    email: yup
+      .string()
+      .required("Email is required")
+      .email("Not a valid email address")
+      .min(2),
+    // add .matches content
+    password: yup.string().required("Password is required").matches().min(8),
   });
 
   const login = (e) => {
@@ -83,7 +88,8 @@ const Login = (e) => {
             required
           />
         </FormGroup>
-        <Button to="/userHomePage" type="submit" disabled={!user}>
+        {/* link button to userHomePage */}
+        <Button type="submit" disabled={!user}>
           Log In
         </Button>
 
