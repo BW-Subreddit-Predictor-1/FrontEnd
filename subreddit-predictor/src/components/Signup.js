@@ -31,24 +31,25 @@ const Signup = (e) => {
 
   return (
     <>
-      <Navbar>
-        <div>
-          <h1 style={{ color: "white" }}>Post Here: Subreddit - Predictor</h1>
-          <Link to="/">Home</Link>
-          <Link to="/">About</Link>
-          <Link to="/">Log In</Link>
-          <Link to="/">Sign Up</Link>
-        </div>
-      </Navbar>
-      <div>
-        <h1>SIGN UP</h1>
-        <h4>
+        <nav>
+          <h1>Post Here: Subreddit - Predictor</h1>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/"}>About</Link>
+        <Link to={"/"}>Log In</Link>
+        <Link to={"/signup"}>Sign Up</Link>
+      </nav>
+      
+    
+     <div className='signupTop'>
+       <h1 className='signuph1'>SIGN UP</h1>
+        <h4 className='signuph4'>
           By having a Subreddit account, you can join, vote, and comment on all
           your favorite Subreddit content.
         </h4>
-        <Form onSubmit={handleSubmit}>
+     </div>
+        
+        <Form onSubmit={handleSubmit} style={{ width: "20%", margin: "0 auto" }}>
           <FormGroup>
-            <Label>First Name</Label>
             <Input
               type="text"
               name="firstName"
@@ -60,7 +61,6 @@ const Signup = (e) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Last Name</Label>
             <Input
               type="text"
               name="lastName"
@@ -72,7 +72,6 @@ const Signup = (e) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Email</Label>
             <Input
               type="text"
               name="email"
@@ -83,7 +82,6 @@ const Signup = (e) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Password</Label>
             <Input
               type="password"
               name="password"
@@ -95,7 +93,6 @@ const Signup = (e) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Confirmation Password</Label>
             <Input
               type="password"
               name="password_confirmation"
@@ -107,11 +104,14 @@ const Signup = (e) => {
           </FormGroup>
           <Button type="submit">Sign Up</Button>
 
-          <h3>
-            Already a Redditor? <Link to="/">LOG IN</Link>
-          </h3>
+    <div className='signupBottom'>
+       <h4 className='signuph4'>
+            Already a Redditor? <Link to="/">Log In</Link>
+          </h4>
+    </div>
+         
         </Form>
-      </div>
+   
     </>
   );
 };
