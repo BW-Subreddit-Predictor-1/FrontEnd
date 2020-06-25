@@ -33,7 +33,7 @@ const Search = (e) => {
           <Input
             type="textarea"
             name="search"
-            placeholder="Enter what you want to search for..."
+            placeholder="Search subreddit posts..."
             onChange={handleChange}
             restricted
           />
