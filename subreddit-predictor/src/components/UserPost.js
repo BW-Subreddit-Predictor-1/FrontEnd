@@ -2,14 +2,16 @@ import React, { useState, useContext } from "react";
 import { Form, Label, Input, Button, FormGroup } from "reactstrap";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { RedditContext } from "../contexts/RedditContext";
+import axios from 'axios';
 
 const UserPost = () => {
+
   const initialState = {
     title: "",
-    post: "",
+    body: "",
   };
 
-  const [postInput, setPostInput] = useState(initialState);
+  const [ postInput, setPostInput ] = useState(initialState);
   const { post, setPost } = useContext(RedditContext);
 
   const handleChange = (e) => {
@@ -21,8 +23,8 @@ const UserPost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axiosWithAuth()
-      .post(`http://localhost:5000/api/`, postInput)
+    axios
+      .post(`https://bwptphsp1ds.herokuapp.com/predict_subreddit`, postInput)
       .then((res) => {
         setPost(res.data);
       })
@@ -41,20 +43,18 @@ const UserPost = () => {
             name="title"
             onChange={handleChange}
             value={postInput.title}
-            restricted
           />
         </FormGroup>
         <FormGroup>
           <Label style={{ color: "white" }}>Post</Label>
           <Input
             type="textarea"
-            name="post"
+            name="body"
             onChange={handleChange}
-            value={postInput.post}
-            restricted
+            value={postInput.body}
           />
         </FormGroup>
-        <Button disabled={!post}>Submit</Button>
+        <Button disabled={!postInput}>Submit</Button>
       </Form>
     </>
   );

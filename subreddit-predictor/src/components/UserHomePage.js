@@ -15,7 +15,7 @@ const UserHomePage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/post")
+      .get("`https://bwptphsp1ds.herokuapp.com/predict_subreddit")
       .then((res) => {
         setPost(res.data);
       })
