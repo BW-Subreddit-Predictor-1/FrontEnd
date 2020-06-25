@@ -11,7 +11,7 @@ const initialLoginState = {
   password: "",
 };
 
-const Login = (e) => {
+const Login = () => {
   const [user, setUser] = useState(initialLoginState);
   const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
