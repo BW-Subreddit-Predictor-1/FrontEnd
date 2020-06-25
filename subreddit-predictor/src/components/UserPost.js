@@ -5,7 +5,7 @@ import { RedditContext } from "../contexts/RedditContext";
 
 const initialState = {
   title: "",
-  post: "",
+  body: "",
 };
 
 const UserPost = () => {
@@ -47,9 +47,9 @@ const UserPost = () => {
           <Label style={{ color: "white" }}>Post</Label>
           <Input
             type="textarea"
-            name="post"
+            name="body"
             onChange={handleChange}
-            value={postInput.post}
+            value={postInput.body}
             restricted
           />
         </FormGroup>
