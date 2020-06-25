@@ -3,7 +3,7 @@ import { Form, Input, Label, Button, Modal } from "reactstrap";
 import axios from "axios";
 import { SearchResults } from "./SearchResults.js";
 
-const Search = () => {
+const Search = (e) => {
   const [search, setSearch] = useState("");
 
   const handleChange = (e) => {
@@ -33,7 +33,7 @@ const Search = () => {
           <Input
             type="textarea"
             name="search"
-            placeholder="Type what you wish to search..."
+            placeholder="Enter what you want to search for..."
             onChange={handleChange}
             restricted
           />
