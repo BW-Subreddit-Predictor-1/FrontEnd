@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Form, Input, Label, Button, Modal } from "reactstrap";
 import axios from "axios";
-import { SearchResults } from "./SearchResults.js";
 
 const Search = (e) => {
   const [search, setSearch] = useState("");
