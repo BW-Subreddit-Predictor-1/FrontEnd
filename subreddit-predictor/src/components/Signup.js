@@ -21,7 +21,7 @@ const Signup = () => {
   const schema = yup.object().shape({
     firstName: yup.string().required("Enter your first name").min(2),
     lastName: yup.string().required("Enter your last name").min(2),
-    email: yup.string().email().required("Enter an email").min(2),
+    email: yup.string().email().required("Enter an email"),
     password: yup.string().required("Enter a valid password").min(8),
     password_confirmation: yup.string().required("Re-enter password").min(8),
   });
@@ -39,18 +39,23 @@ const Signup = () => {
   };
 
   useEffect(() => {
+    console.log(
+      "checking to see if all values in form state follows the rules set in schema"
+    );
     schema.isValid(userForm).then((valid) => {
+      console.log("is form valid?", valid);
       setIsButtonDisabled(!valid);
     });
   }, [userForm]);
 
   const handleSubmit = (e) => {
-    console.log("form submitted");
+    console.log("sign up form submitted");
     e.preventDefault();
     axios
       .post("http://localhost:5000/api/users", userForm)
       .then((res) => {
         setUser(res.data);
+        console.log("successful API POST!");
         setUserForm(initialState);
       })
       .catch((err) => {
@@ -63,13 +68,6 @@ const Signup = () => {
     validateChange(e);
     setUserForm({ ...user, [e.target.name]: e.target.value });
   };
-
-  // const [loading, setLoading] = useState(true);
-
-  // //Time for Loading Screen
-  // setTimeout(() => {
-  //   setLoading(false);
-  // }, 900);
 
   return (
     <>
