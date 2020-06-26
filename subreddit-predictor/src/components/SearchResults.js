@@ -1,5 +1,8 @@
-// import React from "react";
-// // import styled from "styled-components";
+import React from "react";
+import { Card } from "reactstrap";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { Search } from "./Search.js";
 
 // // edit styling
 // const Card = styled.div`
@@ -22,14 +25,33 @@
 //   color: white;
 // `;
 
-// function SearchResults({ props }) {
-//   // make sure props.title and props.post are correct
-//   return (
-//     <Card>
-//       <Name>Title: {props.title}</Name>
-//       <Info>Post: {props.post}</Info>
-//     </Card>
-//   );
-// }
+const handleDelete = (e) => {};
 
-// export { SearchResults };
+function SearchResults() {
+  // make sure props.title and props.post are correct
+  return (
+    <>
+      <nav>
+        <h1>Post Here: Subreddit - Predictor</h1>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/"}>About</Link>
+        <Link to={"/login"}>Log In</Link>
+        <Link to={"/signup"}>Sign Up</Link>
+      </nav>
+
+      <div className="searchResults">
+        {post.map((p, index) => {
+          return (
+            <Card>
+              <p>Title: {post.title}</p>
+              <p>{post.body}</p>
+              <button onClick={handleDelete}>Delete Post</button>
+            </Card>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+export default SearchResults;
