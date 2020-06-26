@@ -6,53 +6,74 @@ import { Form, Input, Button, FormGroup } from "reactstrap";
 import { RedditContext } from "../contexts/RedditContext";
 import * as yup from "yup";
 
-const initialLoginState = {
-  email: "",
-  password: "",
-};
-
 const Login = () => {
-  const [user, setUser] = useState(initialLoginState);
+  const initialLoginState = {
+    email: "",
+    password: "",
+  };
+
+  const [userForm, setUserForm] = useState(initialLoginState);
+  const [user, setUser] = useState([]);
   const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
+  const [errors, setErrors] = useState(initialLoginState);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
   const schema = yup.object().shape({
     email: yup
       .string()
-      .required("Email is required")
-      .email("Not a valid email address")
-      .min(2),
-    // add .matches content
-    password: yup.string().required("Password is required").matches().min(8),
+      .email("Must be a valid email address")
+      .required("Must include email"),
+    password: yup.string().required("Password is required").min(8),
   });
 
-  const login = (e) => {
-    schema.validate(user).then(() => {
-      e.preventDefault();
-      axiosWithAuth()
-        .post("login", user)
-        .then((res) => {
-          localStorage.setItem("token", res.data.payload);
-          push("/userHomePage");
-        })
-        .catch((error) => {
-          console.log("Error loggin in!", error);
-        });
+  const validateChange = (e) => {
+    yup
+      .reach(schema, e.target.email)
+      .validate(e.target.value)
+      .then((valid) => {
+        setErrors({ ...errors, [e.target.email]: "" });
+      })
+      .catch((err) => {
+        setErrors({ ...errors, [e.target.email]: err.errors[0] });
+      });
+  };
 
-      setLoggedState(true);
-      localStorage.setItem("loggedState", true);
+  useEffect(() => {
+    console.log(
+      "checking to see if all values in form state follows the rules set in schema"
+    );
+    schema.isValid(userForm).then((valid) => {
+      console.log("is form valid?", valid);
+      setIsButtonDisabled(!valid);
     });
+  }, [userForm]);
+
+  const login = (e) => {
+    console.log("login form submitted");
+    e.preventDefault();
+    axiosWithAuth()
+      .post("login", user)
+      .then((res) => {
+        localStorage.setItem("token", res.data.payload);
+        push("/userHomePage");
+        setUser(res.data);
+        console.log("successful API POST!");
+        setUserForm(initialState);
+      })
+      .catch((err) => {
+        console.error(err.message, err.response);
+      });
+
+    setLoggedState(true);
+    localStorage.setItem("loggedState", true);
   };
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    e.persist();
+    validateChange(e);
+    setUserForm({ ...user, [e.target.email]: e.target.value });
   };
-
-  // const [loading, setLoading] = useState(true);
-
-  // //Time for Loading Screen
-  // setTimeout(() => {
-  //   setLoading(false);
-  // }, 900);
 
   return (
     <>
@@ -76,6 +97,9 @@ const Login = () => {
             onChange={handleChange}
             required
           />
+          {errors.email.length > 0 ? (
+            <p className="error">{errors.email}</p>
+          ) : null}
         </FormGroup>
         <FormGroup>
           <Input
@@ -87,9 +111,12 @@ const Login = () => {
             onChange={handleChange}
             required
           />
+          {errors.password.length > 0 ? (
+            <p className="error">{errors.password}</p>
+          ) : null}
         </FormGroup>
-        {/* link button to userHomePage */}
-        <Button type="submit" disabled={!user}>
+
+        <Button type="submit" disabled={isButtonDisabled}>
           Log In
         </Button>
 
