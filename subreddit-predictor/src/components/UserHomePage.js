@@ -8,7 +8,7 @@ import axios from "axios";
 const UserHomePage = () => {
   const initialPost = {
     title: "My first reddit post",
-    post: "Reddit is kinda cool",
+    body: "Reddit is kinda cool",
   };
 
   const [post, setPost] = useState(initialPost);
@@ -30,7 +30,7 @@ const UserHomePage = () => {
         <h1>Post Here: Subreddit - Predictor</h1>
         <Link to={"/"}>Home</Link>
         <Link to={"/"}>About</Link>
-        <Link to={"/"}>Log out</Link>
+        <Link to={"/login"}>Log out</Link>
         <Link to={"/signup"}>Sign Up</Link>
       </nav>
 
