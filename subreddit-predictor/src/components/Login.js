@@ -16,7 +16,7 @@ const Login = () => {
 
   const [ user, setUser ] = useState(initialState);
 
-  // const { setLoggedState } = useContext(RedditContext);
+  const setLoggedState = useContext(RedditContext);
   const { push } = useHistory();
   const [isButtonDisabled, setIsButtonDisabled ] = useState(true);
   const [ errors, setErrors ] = useState(initialState);
@@ -53,7 +53,7 @@ const Login = () => {
         localStorage.setItem("token", res.data.payload);
         push("/userHomePage");
       });
-    // setLoggedState(true);
+    setLoggedState(true);
     localStorage.setItem("loggedState", true);
   };
 
@@ -74,8 +74,8 @@ const Login = () => {
     <>
       <nav>
         <h1>Post Here: Subreddit - Predictor</h1>
-        <Link to={"/"}>Home</Link>
-        <Link to={"/"}>About</Link>
+        {<a href='https://theposthere.netlify.app/'>Home</a>}
+        {<a href='https://theposthere.netlify.app/about.html'>About us</a>}
         <Link to={"/"}>Log In</Link>
         <Link to={"/signup"}>Sign Up</Link>
       </nav>

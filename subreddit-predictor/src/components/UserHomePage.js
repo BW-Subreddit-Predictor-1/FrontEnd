@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Search from "./Search.js";
 import UserPost from "./UserPost.js";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ const UserHomePage = () => {
   };
 
   const [post, setPost] = useState(initialPost);
+  const logOut = useContext(RedditContext);
 
   useEffect(() => {
     axios
@@ -28,9 +29,9 @@ const UserHomePage = () => {
     <>
       <nav>
         <h1>Post Here: Subreddit - Predictor</h1>
-        <Link to={"/"}>Home</Link>
-        <Link to={"/"}>About</Link>
-        <Link to={"/"}>Log out</Link>
+        {<a href='https://theposthere.netlify.app/'>Home</a>}
+        {<a href='https://theposthere.netlify.app/about.html'>About us</a>}
+        {<a onClick={() => logOut()} href='/'>Log Out</a>}
         <Link to={"/signup"}>Sign Up</Link>
       </nav>
 

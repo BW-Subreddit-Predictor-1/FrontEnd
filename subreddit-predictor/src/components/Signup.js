@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosWithAuth from '../utils/axiosWithAuth';
 import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 import { FormGroup, Form, Input, Button } from "reactstrap";
 import * as yup from "yup";
+import { RedditContext } from '../contexts/RedditContext';
 
 const Signup = () => {
 
@@ -19,6 +20,7 @@ const Signup = () => {
   const [ errors, setErrors ] = useState(initialState);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
   const { push } = useHistory();
+  const setLoggedState = useContext(RedditContext);
 
   const schema = yup.object().shape({
     FirstName: yup.string().required('Enter your first name').min(2),
@@ -54,7 +56,7 @@ const Signup = () => {
         .post('https://subreddit-post.herokuapp.com/api/auth/register', userForm)
         .then(res => {
           console.log('res results',res.data)
-          // localStorage.setItem("token", res.data.payload);
+          localStorage.setItem("token", res.data.payload);
           setUser(res.data)
           setUserForm(initialState)
           push('/userHomePage')
@@ -62,6 +64,8 @@ const Signup = () => {
         .catch(err => {
           console.error(err.message, err.response)
         })
+        setLoggedState(true);
+        localStorage.setItem("loggedState", true);
   };
 
   const handleChange = (e) => {
@@ -81,8 +85,8 @@ const Signup = () => {
     <>
         <nav>
           <h1>Post Here: Subreddit - Predictor</h1>
-        <Link to={"/"}>Home</Link>
-        <Link to={"/"}>About</Link>
+        {<a href='https://theposthere.netlify.app/'>Home</a>}
+        {<a href='https://theposthere.netlify.app/about.html'>About us</a>}
         <Link to={"/"}>Log In</Link>
         <Link to={"/signup"}>Sign Up</Link>
       </nav>
@@ -91,8 +95,7 @@ const Signup = () => {
      <div className='signupTop'>
        <h1 className='signuph1'>SIGN UP</h1>
         <h4 className='signuph4'>
-          By having a Subreddit account, you can join, vote, and comment on all
-          your favorite Subreddit content.
+          By having a Subreddit Predictor account, you can find the best subreddit for all of your awesome posts!.
         </h4>
      </div>
         
