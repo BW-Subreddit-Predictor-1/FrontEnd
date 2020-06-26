@@ -1,25 +1,71 @@
-import React, { useState } from "react";
-// import axios from "axios";
-import { Route, Link } from "react-router-dom";
-import { Navbar, FormGroup, Form, Label, Input, Button } from "reactstrap";
-// import * as yup from "yup";
+import React, { useState, useEffect } from "react";
+import axiosWithAuth from '../utils/axiosWithAuth';
+import { Link, useHistory } from "react-router-dom";
+import { FormGroup, Form, Input, Button } from "reactstrap";
+import * as yup from "yup";
 
-const Signup = (e) => {
-  const [user, setUser] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
-  });
+const Signup = () => {
+
+  const initialState = {
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    password: ""
+  }
+
+  const [userForm, setUserForm] = useState(initialState);
+  const [user, setUser] = useState([]);
+  const [ errors, setErrors ] = useState(initialState);
+  const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
+  const { push } = useHistory();
+
+  const schema = yup.object().shape({
+    FirstName: yup.string().required('Enter your first name').min(2),
+    LastName: yup.string().required('Enter your last name').min(2),
+    Email: yup.string().email().required('Enter an email').min(2),
+    password: yup.string().required('Enter a valid password').min(8)
+  })
+
+  const validateChange = e => {
+    yup
+      .reach(schema, e.target.name)
+      .validate(e.target.value)
+      .then(valid => {
+        setErrors({...errors, [e.target.name]: ''})
+      })
+      .catch(err => {
+        setErrors({...errors, [e.target.name]: err.errors[0]})
+      })
+  };
+
+  useEffect(() => {
+    schema.isValid(userForm)
+    .then(valid => {
+        setIsButtonDisabled(!valid)
+    })
+  }, [userForm])
 
   const handleSubmit = (e) => {
     console.log("form submitted");
     e.preventDefault();
+      axiosWithAuth()
+        .post('/api/auth/register', userForm)
+        .then(res => {
+          console.log('res results',res.data)
+          localStorage.setItem("token", res.data.payload);
+          setUser(res.data)
+          setUserForm(initialState)
+          push('/userHomePage')
+        })
+        .catch(err => {
+          console.error(err.message, err.response)
+        })
   };
 
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    e.persist();
+    validateChange(e);
+    setUserForm({ ...user, [e.target.name]: e.target.value });
   };
 
   // const [loading, setLoading] = useState(true);
@@ -52,34 +98,35 @@ const Signup = (e) => {
           <FormGroup>
             <Input
               type="text"
-              name="firstName"
+              name="FirstName"
               placeholder="First Name"
-              id="firstName"
-              value={user.firstName}
+              id="FirstName"
+              value={userForm.FirstName}
               onChange={handleChange}
-              required
             />
+            {errors.FirstName.length > 0 ? <p className="error">{errors.FirstName}</p> : null}
           </FormGroup>
           <FormGroup>
             <Input
               type="text"
-              name="lastName"
+              name="LastName"
               placeholder="Last Name"
-              id="lastName"
-              value={user.lastName}
+              id="LastName"
+              value={userForm.LastName}
               onChange={handleChange}
-              required
             />
+            {errors.LastName.length > 0 ? <p className="error">{errors.LastName}</p> : null}
           </FormGroup>
           <FormGroup>
             <Input
               type="text"
-              name="email"
+              name="Email"
               placeholder="Email"
-              value={user.email}
+              value={userForm.Email}
               onChange={handleChange}
               required
             />
+            {errors.Email.length > 0 ? <p className="error">{errors.Email}</p> : null}
           </FormGroup>
           <FormGroup>
             <Input
@@ -87,21 +134,13 @@ const Signup = (e) => {
               name="password"
               placeholder="Password"
               id="password"
-              value={user.password}
+              value={userForm.password}
               onChange={handleChange}
               required
             />
+            {errors.password.length > 0 ? <p className="error">{errors.password}</p> : null}
           </FormGroup>
-          <FormGroup>
-            <Input
-              type="password"
-              name="password_confirmation"
-              placeholder="Password Confirmation"
-              id="password"
-              value={user.password_confirmation}
-              onChange={handleChange}
-            />
-          </FormGroup>
+        
           <Button type="submit">Sign Up</Button>
 
     <div className='signupBottom'>

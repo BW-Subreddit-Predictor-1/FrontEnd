@@ -5,6 +5,7 @@ const axiosWithAuth = () => {
 
   return axios.create({
     headers: {
+      baseURL: 'https://subreddit-post.herokuapp.com',
       Authorization: token
     }
   });

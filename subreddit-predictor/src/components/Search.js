@@ -16,7 +16,7 @@ const Search = () => {
   const getPost = e => {
     e.preventDefault();
        axios
-      .get(`https://localhost:5000/api/${search}`)
+      .get(`https://localhost:5000/api/post/${search}`)
       .then(res => {
         setSearch(res.data)
       })
@@ -31,11 +31,10 @@ const Search = () => {
       <Form style={{ width: "50%", margin: "0 auto" }}
         onSubmit={getPost}
       >
-        <Label>Search</Label>
         <Input
           type="textarea"
           name="search"
-          placeholder="Type what you wish to search..."
+          placeholder="Search for a post!"
           onChange={handleChange}
           restricted
         />

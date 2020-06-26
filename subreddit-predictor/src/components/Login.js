@@ -1,24 +1,53 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, FormGroup } from "reactstrap";
 import { RedditContext } from "../contexts/RedditContext";
-// import * as yup from "yup";
+import * as yup from "yup";
 
 const Login = () => {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+
+  const initialState = {
+    Email: '',
+    password: ''
+  }
+
+  const [ user, setUser ] = useState(initialState);
 
   const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
+  const [isButtonDisabled, setIsButtonDisabled ] = useState(true);
+  const [ errors, setErrors ] = useState(initialState);
+
+  const loginSchema = yup.object().shape({
+    Email: yup.string().email().required('Enter an email').min(2),
+    password: yup.string().required('Enter a valid password').min(2)
+  })
+
+  const validateLoginChange = e => {
+    yup
+      .reach(loginSchema, e.target.name)
+      .validate(e.target.value)
+      .then(valid => {
+        setErrors({...errors, [e.target.name] : ''})
+      })
+      .catch(err => {
+        setErrors({...errors, [e.target.name]: err.errors[0]})
+      })
+  }
+
+  useEffect(() => {
+    loginSchema.isValid(user)
+      .then(valid => {
+        setIsButtonDisabled(!valid)
+      })
+  }, [user])
 
   const login = (e) => {
     e.preventDefault();
     axiosWithAuth()
-      .post("login", user)
+      .post("/api/auth/login", user)
       .then((res) => {
         localStorage.setItem("token", res.data.payload);
         push("/userHomePage");
@@ -28,6 +57,8 @@ const Login = () => {
   };
 
   const handleChange = (e) => {
+    e.persist();
+    validateLoginChange(e);
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
@@ -53,13 +84,14 @@ const Login = () => {
         <FormGroup>
           <Input
             type="text"
-            name="email"
+            name="Email"
             placeholder="Email"
-            id="email"
-            value={user.email}
+            id="Email"
+            value={user.Email}
             onChange={handleChange}
             required
           />
+          {errors.Email.length > 0 ? <p className='error'>{errors.Email}</p> : null}
         </FormGroup>
         <FormGroup>
           <Input
@@ -71,8 +103,9 @@ const Login = () => {
             onChange={handleChange}
             required
           />
+          {errors.password.length > 0 ? <p className='error'>{errors.password}</p> : null}
         </FormGroup>
-        <Button type="submit" disabled={!user}>
+        <Button type="submit" disabled={isButtonDisabled}>
           Log In
         </Button>
 
