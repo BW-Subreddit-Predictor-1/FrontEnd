@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosWithAuth from '../utils/axiosWithAuth';
+import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 import { FormGroup, Form, Input, Button } from "reactstrap";
 import * as yup from "yup";
@@ -48,11 +49,12 @@ const Signup = () => {
   const handleSubmit = (e) => {
     console.log("form submitted");
     e.preventDefault();
-      axiosWithAuth()
-        .post('/api/auth/register', userForm)
+    console.log('User Form',userForm)
+      axios
+        .post('https://subreddit-post.herokuapp.com/api/auth/register', userForm)
         .then(res => {
           console.log('res results',res.data)
-          localStorage.setItem("token", res.data.payload);
+          // localStorage.setItem("token", res.data.payload);
           setUser(res.data)
           setUserForm(initialState)
           push('/userHomePage')
@@ -65,7 +67,7 @@ const Signup = () => {
   const handleChange = (e) => {
     e.persist();
     validateChange(e);
-    setUserForm({ ...user, [e.target.name]: e.target.value });
+    setUserForm({ ...userForm, [e.target.name]: e.target.value });
   };
 
   // const [loading, setLoading] = useState(true);

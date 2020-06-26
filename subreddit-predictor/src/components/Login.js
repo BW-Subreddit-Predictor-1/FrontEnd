@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
+import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, FormGroup } from "reactstrap";
@@ -15,7 +16,7 @@ const Login = () => {
 
   const [ user, setUser ] = useState(initialState);
 
-  const { setLoggedState } = useContext(RedditContext);
+  // const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
   const [isButtonDisabled, setIsButtonDisabled ] = useState(true);
   const [ errors, setErrors ] = useState(initialState);
@@ -46,13 +47,13 @@ const Login = () => {
 
   const login = (e) => {
     e.preventDefault();
-    axiosWithAuth()
-      .post("/api/auth/login", user)
+    axios
+      .post("https://subreddit-post.herokuapp.com/api/auth/login", user)
       .then((res) => {
         localStorage.setItem("token", res.data.payload);
         push("/userHomePage");
       });
-    setLoggedState(true);
+    // setLoggedState(true);
     localStorage.setItem("loggedState", true);
   };
 
