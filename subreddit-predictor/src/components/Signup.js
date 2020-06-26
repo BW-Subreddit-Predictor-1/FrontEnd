@@ -6,11 +6,10 @@ import * as yup from "yup";
 
 const Signup = () => {
   const initialState = {
-    firstName: "",
-    lastName: "",
-    email: "",
+    FirstName: "",
+    LastName: "",
+    Email: "",
     password: "",
-    password_confirmation: "",
   };
 
   const [userForm, setUserForm] = useState(initialState);
@@ -19,11 +18,10 @@ const Signup = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const schema = yup.object().shape({
-    firstName: yup.string().required("Enter your first name").min(2),
-    lastName: yup.string().required("Enter your last name").min(2),
-    email: yup.string().email().required("Enter an email"),
+    FirstName: yup.string().required("Enter your first name").min(2),
+    LastName: yup.string().required("Enter your last name").min(2),
+    Email: yup.string().email().required("Enter an email"),
     password: yup.string().required("Enter a valid password").min(8),
-    password_confirmation: yup.string().required("Re-enter password").min(8),
   });
 
   const validateChange = (e) => {
@@ -52,7 +50,7 @@ const Signup = () => {
     console.log("sign up form submitted");
     e.preventDefault();
     axios
-      .post("http://localhost:5000/api/users", userForm)
+      .post("https://subreddit-post.herokuapp.com/api/auth/register", userForm)
       .then((res) => {
         setUser(res.data);
         console.log("successful API POST!");
@@ -66,7 +64,7 @@ const Signup = () => {
   const handleChange = (e) => {
     e.persist();
     validateChange(e);
-    setUserForm({ ...user, [e.target.name]: e.target.value });
+    setUserForm({ ...userForm, [e.target.name]: e.target.value });
   };
 
   return (
@@ -91,42 +89,42 @@ const Signup = () => {
         <FormGroup>
           <Input
             type="text"
-            name="firstName"
+            name="FirstName"
             placeholder="First Name"
             id="firstName"
-            value={userForm.firstName}
+            value={userForm.FirstName}
             onChange={handleChange}
             required
           />
-          {errors.firstName.length > 0 ? (
-            <p className="error">{errors.firstName}</p>
+          {errors.FirstName.length > 0 ? (
+            <p className="error">{errors.FirstName}</p>
           ) : null}
         </FormGroup>
         <FormGroup>
           <Input
             type="text"
-            name="lastName"
+            name="LastName"
             placeholder="Last Name"
             id="lastName"
-            value={userForm.lastName}
+            value={userForm.LastName}
             onChange={handleChange}
             required
           />
-          {errors.lastName.length > 0 ? (
-            <p className="error">{errors.lastName}</p>
+          {errors.LastName.length > 0 ? (
+            <p className="error">{errors.LastName}</p>
           ) : null}
         </FormGroup>
         <FormGroup>
           <Input
             type="text"
-            name="email"
+            name="Email"
             placeholder="Email"
-            value={userForm.email}
+            value={userForm.Email}
             onChange={handleChange}
             required
           />
-          {errors.email.length > 0 ? (
-            <p className="error">{errors.email}</p>
+          {errors.Email.length > 0 ? (
+            <p className="error">{errors.Email}</p>
           ) : null}
         </FormGroup>
         <FormGroup>
@@ -143,19 +141,7 @@ const Signup = () => {
             <p className="error">{errors.password}</p>
           ) : null}
         </FormGroup>
-        <FormGroup>
-          <Input
-            type="password"
-            name="password_confirmation"
-            placeholder="Password Confirmation"
-            id="password"
-            value={userForm.password_confirmation}
-            onChange={handleChange}
-          />
-          {errors.password_confirmation.length > 0 ? (
-            <p className="error">{errors.password_confirmation}</p>
-          ) : null}
-        </FormGroup>
+
         <Button type="submit" disabled={isButtonDisabled}>
           Sign Up
         </Button>

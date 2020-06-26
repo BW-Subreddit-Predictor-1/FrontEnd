@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Search from "./Search.js";
 import UserPost from "./UserPost.js";
 import { Link } from "react-router-dom";
@@ -6,13 +6,7 @@ import { RedditContext } from "../contexts/RedditContext";
 import axios from "axios";
 
 const UserHomePage = () => {
-  const initialPost = {
-    title: "My first reddit post",
-    body: "Reddit is kinda cool",
-  };
-
-  const [post, setPost] = useState(initialPost);
-
+  const { post, setPost } = useContext(RedditContext);
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/post")

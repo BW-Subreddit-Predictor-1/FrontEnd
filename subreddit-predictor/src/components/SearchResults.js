@@ -1,33 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card } from "reactstrap";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { Search } from "./Search.js";
-
-// // edit styling
-// const Card = styled.div`
-//   background: #83715b;
-//   color: lightblue;
-//   padding: 5px;
-//   margin: 25px;
-//   text-align: center;
-//   width: 250px;
-//   border-radius: 7px;
-//   box-shadow: 7px 7px 5px #aaaaaa;
-// `;
-
-// const Name = styled.h2`
-//   margin: 5px;
-//   text-align: center;
-// `;
-
-// const Info = styled.h4`
-//   color: white;
-// `;
-
-const handleDelete = (e) => {};
+import { RedditContext } from "../contexts/RedditContext";
 
 function SearchResults() {
+  const { post } = useContext(RedditContext);
   // make sure props.title and props.post are correct
   return (
     <>
@@ -42,11 +19,13 @@ function SearchResults() {
       <div className="searchResults">
         {post.map((p, index) => {
           return (
-            <Card>
-              <p>Title: {post.title}</p>
-              <p>{post.body}</p>
-              <button onClick={handleDelete}>Delete Post</button>
-            </Card>
+            <div key={index}>
+              <Card>
+                <p>Title: {post.title}</p>
+                <p>{post.body}</p>
+                <button>Delete Post</button>
+              </Card>
+            </div>
           );
         })}
       </div>

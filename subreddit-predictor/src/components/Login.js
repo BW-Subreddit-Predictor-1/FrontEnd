@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, FormGroup } from "reactstrap";
@@ -7,20 +8,20 @@ import { RedditContext } from "../contexts/RedditContext";
 import * as yup from "yup";
 
 const Login = () => {
-  const initialLoginState = {
-    email: "",
+  const initialState = {
+    Email: "",
     password: "",
   };
 
-  const [userForm, setUserForm] = useState(initialLoginState);
+  const [userForm, setUserForm] = useState(initialState);
   const [user, setUser] = useState([]);
-  const { setLoggedState } = useContext(RedditContext);
+  // const { setLoggedState } = useContext(RedditContext);
   const { push } = useHistory();
-  const [errors, setErrors] = useState(initialLoginState);
+  const [errors, setErrors] = useState(initialState);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const schema = yup.object().shape({
-    email: yup
+    Email: yup
       .string()
       .email("Must be a valid email address")
       .required("Must include email"),
@@ -29,13 +30,13 @@ const Login = () => {
 
   const validateChange = (e) => {
     yup
-      .reach(schema, e.target.email)
+      .reach(schema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
-        setErrors({ ...errors, [e.target.email]: "" });
+        setErrors({ ...errors, [e.target.name]: "" });
       })
       .catch((err) => {
-        setErrors({ ...errors, [e.target.email]: err.errors[0] });
+        setErrors({ ...errors, [e.target.name]: err.errors[0] });
       });
   };
 
@@ -52,8 +53,8 @@ const Login = () => {
   const login = (e) => {
     console.log("login form submitted");
     e.preventDefault();
-    axiosWithAuth()
-      .post("login", user)
+    axios
+      .post("https://subreddit-post.herokuapp.com/api/auth/login", userForm)
       .then((res) => {
         localStorage.setItem("token", res.data.payload);
         push("/userHomePage");
@@ -65,14 +66,14 @@ const Login = () => {
         console.error(err.message, err.response);
       });
 
-    setLoggedState(true);
-    localStorage.setItem("loggedState", true);
+    // setLoggedState(true);
+    // localStorage.setItem("loggedState", true);
   };
 
   const handleChange = (e) => {
     e.persist();
     validateChange(e);
-    setUserForm({ ...user, [e.target.email]: e.target.value });
+    setUserForm({ ...userForm, [e.target.name]: e.target.value });
   };
 
   return (
@@ -93,12 +94,12 @@ const Login = () => {
             name="email"
             placeholder="Email"
             id="email"
-            value={user.email}
+            value={userForm.Email}
             onChange={handleChange}
             required
           />
-          {errors.email.length > 0 ? (
-            <p className="error">{errors.email}</p>
+          {errors.Email.length > 0 ? (
+            <p className="error">{errors.Email}</p>
           ) : null}
         </FormGroup>
         <FormGroup>
@@ -107,7 +108,7 @@ const Login = () => {
             name="password"
             placeholder="Password"
             id="password"
-            value={user.password}
+            value={userForm.password}
             onChange={handleChange}
             required
           />
