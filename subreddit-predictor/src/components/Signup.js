@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import axiosWithAuth from '../utils/axiosWithAuth';
+import { Link, useHistory } from "react-router-dom";
 import { FormGroup, Form, Input, Button } from "reactstrap";
 import * as yup from "yup";
 
 const Signup = () => {
 
   const initialState = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    password_confirmation: ""
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    password: ""
   }
 
   const [userForm, setUserForm] = useState(initialState);
   const [user, setUser] = useState([]);
   const [ errors, setErrors ] = useState(initialState);
   const [ isButtonDisabled, setIsButtonDisabled ] = useState(true);
+  const { push } = useHistory();
 
   const schema = yup.object().shape({
-    firstName: yup.string().required('Enter your first name').min(2),
-    lastName: yup.string().required('Enter your last name').min(2),
-    email: yup.string().email().required('Enter an email').min(2),
-    password: yup.string().required('Enter a valid password').min(8),
-    password_confirmation: yup.string().required('Re-enter password').min(8)
+    FirstName: yup.string().required('Enter your first name').min(2),
+    LastName: yup.string().required('Enter your last name').min(2),
+    Email: yup.string().email().required('Enter an email').min(2),
+    password: yup.string().required('Enter a valid password').min(8)
   })
 
   const validateChange = e => {
@@ -49,11 +48,14 @@ const Signup = () => {
   const handleSubmit = (e) => {
     console.log("form submitted");
     e.preventDefault();
-      axios
-        .post('http://localhost:5000/api/users', userForm)
+      axiosWithAuth()
+        .post('/api/auth/register', userForm)
         .then(res => {
+          console.log('res results',res.data)
+          localStorage.setItem("token", res.data.payload);
           setUser(res.data)
           setUserForm(initialState)
+          push('/userHomePage')
         })
         .catch(err => {
           console.error(err.message, err.response)
@@ -96,37 +98,35 @@ const Signup = () => {
           <FormGroup>
             <Input
               type="text"
-              name="firstName"
+              name="FirstName"
               placeholder="First Name"
-              id="firstName"
-              value={userForm.firstName}
+              id="FirstName"
+              value={userForm.FirstName}
               onChange={handleChange}
-              required
             />
-            {errors.firstName.length > 0 ? <p className="error">{errors.firstName}</p> : null}
+            {errors.FirstName.length > 0 ? <p className="error">{errors.FirstName}</p> : null}
           </FormGroup>
           <FormGroup>
             <Input
               type="text"
-              name="lastName"
+              name="LastName"
               placeholder="Last Name"
-              id="lastName"
-              value={userForm.lastName}
+              id="LastName"
+              value={userForm.LastName}
               onChange={handleChange}
-              required
             />
-            {errors.lastName.length > 0 ? <p className="error">{errors.lastName}</p> : null}
+            {errors.LastName.length > 0 ? <p className="error">{errors.LastName}</p> : null}
           </FormGroup>
           <FormGroup>
             <Input
               type="text"
-              name="email"
+              name="Email"
               placeholder="Email"
-              value={userForm.email}
+              value={userForm.Email}
               onChange={handleChange}
               required
             />
-            {errors.email.length > 0 ? <p className="error">{errors.email}</p> : null}
+            {errors.Email.length > 0 ? <p className="error">{errors.Email}</p> : null}
           </FormGroup>
           <FormGroup>
             <Input
@@ -140,18 +140,8 @@ const Signup = () => {
             />
             {errors.password.length > 0 ? <p className="error">{errors.password}</p> : null}
           </FormGroup>
-          <FormGroup>
-            <Input
-              type="password"
-              name="password_confirmation"
-              placeholder="Password Confirmation"
-              id="password"
-              value={userForm.password_confirmation}
-              onChange={handleChange}
-            />
-            {errors.password_confirmation.length > 0 ? <p className="error">{errors.password_confirmation}</p> : null}
-          </FormGroup>
-          <Button type="submit" disabled={isButtonDisabled}>Sign Up</Button>
+        
+          <Button type="submit">Sign Up</Button>
 
     <div className='signupBottom'>
        <h4 className='signuph4'>

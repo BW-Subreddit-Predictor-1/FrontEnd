@@ -20,8 +20,8 @@ function App() {
     <div className="App">
       <Switch>
         <RedditContext.Provider value={loggedState, logOut, setLoggedState }>
-          {/* <PrivateRoute exact path="/userHomePage" component={UserHomePage} /> */}
-          <Route path='/userHomePage' component={UserHomePage} />
+          <PrivateRoute exact path="/userHomePage" component={UserHomePage} />
+          {/* <Route path='/userHomePage' component={UserHomePage} /> */}
           <Route path="/signup" component={Signup} />
           <Route exact path="/" component={Login} />
         </RedditContext.Provider>
