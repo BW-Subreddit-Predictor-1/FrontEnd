@@ -58,11 +58,12 @@ nav {
 }
 
 nav a {
+  height: 120px;
+  width: 100%;
   color: white;
   text-decoration: none;
   padding-right: 10px;
-  align-items: center;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 nav a:hover {
