@@ -1,36 +1,45 @@
-import React, { useContext } from "react";
-import { Card } from "reactstrap";
+import React, { useState, useContext } from "react";
+import { Label, Form, Card, Container, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { RedditContext } from "../contexts/RedditContext";
+import UserPost from "./UserPost";
 
-function SearchResults() {
-  const { post } = useContext(RedditContext);
-  // make sure props.title and props.post are correct
+const SearchResults = () => {
+  // const post = useContext(RedditContext);
+  const [post, setPost] = useState([]);
+  const addPost = (newPost) => {
+    setPost([...post, newPost]);
+  };
+  // const [loading, setLoading] = useState(false);
+  // const [storiesPerPage] = useState(8);
+
   return (
     <>
-      <nav>
-        <h1>Post Here: Subreddit - Predictor</h1>
-        <Link to={"/"}>Home</Link>
-        <Link to={"/"}>About</Link>
-        <Link to={"/login"}>Log In</Link>
-        <Link to={"/signup"}>Sign Up</Link>
-      </nav>
+      <div className="Searches">
+        <nav>
+          <h1>Post Here: Subreddit - Predictor</h1>
+          <Link to={"/"}>Home</Link>
+          <Link to={"/"}>About</Link>
+          <Link to={"/login"}>Log In</Link>
+          <Link to={"/signup"}>Sign Up</Link>
+        </nav>
 
-      <div className="searchResults">
-        {post.map((p, index) => {
-          return (
-            <div key={index}>
-              <Card>
-                <p>Title: {post.title}</p>
-                <p>{post.body}</p>
-                <button>Delete Post</button>
+        <Label>Search Results</Label>
+        <UserPost addPost={addPost} />
+        {post.map(
+          (post, i) => (
+            console.log("index"),
+            (
+              <Card key={i++}>
+                <Container key={i}>Title: {post.title}</Container>
+                <Container> {post.body}</Container>
+                <Button>Delete Post</Button>
               </Card>
-            </div>
-          );
-        })}
+            )
+          )
+        )}
       </div>
     </>
   );
-}
-
+};
 export default SearchResults;
