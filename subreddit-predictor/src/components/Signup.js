@@ -52,11 +52,12 @@ const Signup = () => {
     console.log("form submitted");
     e.preventDefault();
     console.log('User Form',userForm)
-      axios
+      axiosWithAuth()
         .post('https://subreddit-post.herokuapp.com/api/auth/register', userForm)
         .then(res => {
           console.log('res results',res.data)
-          localStorage.setItem("token", res.data.payload);
+          const { token } = res.data
+          localStorage.setItem("token", token);
           setUser(res.data)
           setUserForm(initialState)
           push('/userHomePage')

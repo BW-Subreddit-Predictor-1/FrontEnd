@@ -47,10 +47,11 @@ const Login = () => {
 
   const login = (e) => {
     e.preventDefault();
-    axios
+    axiosWithAuth()
       .post("https://subreddit-post.herokuapp.com/api/auth/login", user)
       .then((res) => {
-        localStorage.setItem("token", res.data.payload);
+        const { token } = res.data
+        localStorage.setItem("token", token);
         push("/userHomePage");
       });
     setLoggedState(true);

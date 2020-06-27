@@ -3,6 +3,7 @@ import { Form, Label, Input, Button, FormGroup } from "reactstrap";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { RedditContext } from "../contexts/RedditContext";
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 const UserPost = () => {
 
@@ -12,7 +13,8 @@ const UserPost = () => {
   };
 
   const [ postInput, setPostInput ] = useState(initialState);
-  const { post, setPost } = useContext(RedditContext);
+  const setPost  = useContext(RedditContext);
+  const { push } = useHistory();
 
   const handleChange = (e) => {
     setPostInput({
@@ -24,9 +26,11 @@ const UserPost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post(`https://bwptphsp1ds.herokuapp.com/predict_subreddit`, postInput)
+      .post('https://bwptphsp1ds.herokuapp.com/predict_subreddit', postInput)
       .then((res) => {
+        console.log('Res in user post', res.data)
         setPost(res.data);
+        push('/searchResults')
       })
       .catch((err) => {
         console.error(err.message, err.response);
@@ -54,7 +58,7 @@ const UserPost = () => {
             value={postInput.body}
           />
         </FormGroup>
-        <Button disabled={!postInput}>Submit</Button>
+        <Button>Submit</Button>
       </Form>
     </>
   );
