@@ -5,25 +5,17 @@ import { Link } from "react-router-dom";
 import { RedditContext } from "../contexts/RedditContext";
 import axios from "axios";
 
+
 const UserHomePage = () => {
-  const initialPost = {
-    title: "My first reddit post",
-    post: "Reddit is kinda cool",
-  };
+  
+  const setPost = useContext(RedditContext);
+  const post = useContext(RedditContext);
 
-  const [post, setPost] = useState(initialPost);
-  const logOut = useContext(RedditContext);
+  const logOut = () => {
+    localStorage.removeItem('token')
+    localStorage.setItem('loggedState', false)
+  }
 
-  useEffect(() => {
-    axios
-      .get("`https://bwptphsp1ds.herokuapp.com/predict_subreddit")
-      .then((res) => {
-        setPost(res.data);
-      })
-      .catch((err) => {
-        console.error(err.message, err.response);
-      });
-  }, []);
 
   return (
     <>
@@ -35,7 +27,7 @@ const UserHomePage = () => {
         <Link to={"/signup"}>Sign Up</Link>
       </nav>
 
-      <RedditContext.Provider value={(post, setPost)}>
+      <RedditContext.Provider value={post, setPost}>
         <h1 className="userHomePgh1">Profile Post Page</h1>
         <Search />
         <br />
