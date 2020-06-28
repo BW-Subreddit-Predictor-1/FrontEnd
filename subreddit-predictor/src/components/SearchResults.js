@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Label, Form, Card, Container, Button } from "reactstrap";
+import { Label, Form, Container, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { RedditContext } from "../contexts/RedditContext";
 import UserPost from "./UserPost";
@@ -30,11 +30,11 @@ const SearchResults = () => {
           (post, i) => (
             console.log("index"),
             (
-              <Card key={i++}>
-                <Container key={i}>Title: {post.title}</Container>
-                <Container> {post.body}</Container>
+              <Container key={i++}>
+                title= {post.title}
+                body={post.body}
                 <Button>Delete Post</Button>
-              </Card>
+              </Container>
             )
           )
         )}
