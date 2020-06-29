@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Label, Form, Container, Button } from "reactstrap";
+import { Label, Row, Container, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { RedditContext } from "../contexts/RedditContext";
 import UserPost from "./UserPost";
