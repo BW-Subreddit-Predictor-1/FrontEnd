@@ -2,18 +2,17 @@ import React, { useState, useContext } from "react";
 import { Form, Label, Input, Button, FormGroup } from "reactstrap";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { RedditContext } from "../contexts/RedditContext";
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const UserPost = () => {
-
   const initialState = {
     title: "",
     body: "",
   };
 
-  const [ postInput, setPostInput ] = useState(initialState);
-  const setPost  = useContext(RedditContext);
+  const [postInput, setPostInput] = useState(initialState);
+  const setPost = useContext(RedditContext);
   const { push } = useHistory();
 
   const handleChange = (e) => {
@@ -26,11 +25,14 @@ const UserPost = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post('https://bwptphsp1ds.herokuapp.com/predict_subreddit', postInput)
+      .post(
+        "https://cors-anywhere.herokuapp.com/https://bwptphsp1ds.herokuapp.com/predict_subreddit",
+        postInput
+      )
       .then((res) => {
-        console.log('Res in user post', res.data)
+        console.log("Res in user post", res.data);
         setPost(res.data);
-        push('/searchResults')
+        push("/searchResults");
       })
       .catch((err) => {
         console.error(err.message, err.response);
