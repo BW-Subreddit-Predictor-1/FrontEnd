@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axiosWithAuth from "../utils/axiosWithAuth";
-import axios from 'axios';
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, FormGroup } from "reactstrap";
@@ -8,49 +8,55 @@ import { RedditContext } from "../contexts/RedditContext";
 import * as yup from "yup";
 
 const Login = () => {
-
   const initialState = {
-    Email: '',
-    password: ''
-  }
+    Email: "",
+    password: "",
+  };
 
-  const [ user, setUser ] = useState(initialState);
+  const [user, setUser] = useState(initialState);
 
   const setLoggedState = useContext(RedditContext);
   const { push } = useHistory();
-  const [isButtonDisabled, setIsButtonDisabled ] = useState(true);
-  const [ errors, setErrors ] = useState(initialState);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [errors, setErrors] = useState(initialState);
 
   const loginSchema = yup.object().shape({
-    Email: yup.string().email().required('Enter an email').min(2),
-    password: yup.string().required('Enter a valid password').min(2)
-  })
+    Email: yup
+      .string()
+      .email("Must be a valid email address")
+      .required("Must include email")
+      .min(2),
+    password: yup.string().required("Password is required").min(2),
+  });
 
-  const validateLoginChange = e => {
+  const validateLoginChange = (e) => {
     yup
       .reach(loginSchema, e.target.name)
       .validate(e.target.value)
-      .then(valid => {
-        setErrors({...errors, [e.target.name] : ''})
+      .then((valid) => {
+        setErrors({ ...errors, [e.target.name]: "" });
       })
-      .catch(err => {
-        setErrors({...errors, [e.target.name]: err.errors[0]})
-      })
-  }
+      .catch((err) => {
+        setErrors({ ...errors, [e.target.name]: err.errors[0] });
+      });
+  };
 
   useEffect(() => {
-    loginSchema.isValid(user)
-      .then(valid => {
-        setIsButtonDisabled(!valid)
-      })
-  }, [user])
+    console.log(
+      "checking to see if all values in form state follows the rules set in loginSchema"
+    );
+    loginSchema.isValid(user).then((valid) => {
+      console.log("is loginForm valid?", valid);
+      setIsButtonDisabled(!valid);
+    });
+  }, [user]);
 
   const login = (e) => {
     e.preventDefault();
     axiosWithAuth()
       .post("https://subreddit-post.herokuapp.com/api/auth/login", user)
       .then((res) => {
-        const { token } = res.data
+        const { token } = res.data;
         localStorage.setItem("token", token);
         push("/userHomePage");
       });
@@ -64,19 +70,12 @@ const Login = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  // const [loading, setLoading] = useState(true);
-
-  // //Time for Loading Screen
-  // setTimeout(() => {
-  //   setLoading(false);
-  // }, 900);
-
   return (
     <>
       <nav>
         <h1>Post Here: Subreddit - Predictor</h1>
-        {<a href='https://theposthere.netlify.app/'>Home</a>}
-        {<a href='https://theposthere.netlify.app/about.html'>About us</a>}
+        {<a href="https://theposthere.netlify.app/">Home</a>}
+        {<a href="https://theposthere.netlify.app/about.html">About us</a>}
         <Link to={"/"}>Log In</Link>
         <Link to={"/signup"}>Sign Up</Link>
       </nav>
@@ -93,7 +92,9 @@ const Login = () => {
             onChange={handleChange}
             required
           />
-          {errors.Email.length > 0 ? <p className='error'>{errors.Email}</p> : null}
+          {errors.Email.length > 0 ? (
+            <p className="error">{errors.Email}</p>
+          ) : null}
         </FormGroup>
         <FormGroup>
           <Input
@@ -105,7 +106,9 @@ const Login = () => {
             onChange={handleChange}
             required
           />
-          {errors.password.length > 0 ? <p className='error'>{errors.password}</p> : null}
+          {errors.password.length > 0 ? (
+            <p className="error">{errors.password}</p>
+          ) : null}
         </FormGroup>
         <Button type="submit" disabled={isButtonDisabled}>
           Log In
