@@ -13,6 +13,27 @@ function App() {
     JSON.parse(localStorage.getItem("loggedState"))
   );
 
+  const logOut = () => {
+    localStorage.removeItem("token");
+    localStorage.setItem("loggedState", false);
+  };
+
+  const initialPost = [
+    {
+      title: "My first reddit post",
+      body: "Reddit is kinda cool",
+    },
+    {
+      title: "LambdaSchool:  The Official Lambda subreddit",
+      body: "Welcome to r/lambdaschool, the official Lambda School subreddit.",
+    },
+    {
+      title: "webdev: reddit for web developers",
+      body:
+        "A community dedicated to all things web development: both front-end and back-end.",
+    },
+  ];
+
   const [post, setPost] = useState(initialPost);
 
   return (
