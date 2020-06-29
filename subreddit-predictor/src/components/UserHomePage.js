@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import Search from "./Search.js";
 import UserPost from "./UserPost.js";
+import SearchResults from "./SearchResults.js";
 import { Link } from "react-router-dom";
 import { RedditContext } from "../contexts/RedditContext";
 import axios from "axios";
@@ -31,6 +32,7 @@ const UserHomePage = () => {
       <RedditContext.Provider value={(post, setPost)}>
         <h1 className="userHomePgh1">Profile Post Page</h1>
         <Search />
+        <SearchResults />
         <br />
         <UserPost />
       </RedditContext.Provider>

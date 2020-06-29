@@ -20,7 +20,7 @@ const Login = () => {
   const [errors, setErrors] = useState(initialState);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  const schema = yup.object().shape({
+  const loginSchema = yup.object().shape({
     Email: yup
       .string()
       .email("Must be a valid email address")
@@ -30,7 +30,7 @@ const Login = () => {
 
   const validateChange = (e) => {
     yup
-      .reach(schema, e.target.name)
+      .reach(loginSchema, e.target.name)
       .validate(e.target.value)
       .then((valid) => {
         setErrors({ ...errors, [e.target.name]: "" });
@@ -42,9 +42,9 @@ const Login = () => {
 
   useEffect(() => {
     console.log(
-      "checking to see if all values in form state follows the rules set in schema"
+      "checking to see if all values in form state follows the rules set in loginSchema"
     );
-    schema.isValid(userForm).then((valid) => {
+    loginSchema.isValid(userForm).then((valid) => {
       console.log("is form valid?", valid);
       setIsButtonDisabled(!valid);
     });
