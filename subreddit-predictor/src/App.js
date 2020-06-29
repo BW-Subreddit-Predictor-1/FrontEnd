@@ -14,18 +14,20 @@ function App() {
 
   const initialPost = [
     {
-    title: "My first reddit post",
-    body: "Reddit is kinda cool",
+    title: "",
+    body: "",
   }
 ];
 
 
-  const [post, setPost] = useState(initialPost);
+
+  const [post, setPost] = useState([]);
+  const [ results, setResults ] = useState([])
 
   return ( 
     <div className="App">
       <Switch>
-        <RedditContext.Provider value={loggedState, setLoggedState, post, setPost}>
+        <RedditContext.Provider value={loggedState, setLoggedState, post, setPost, results, setResults}>
           <PrivateRoute path="/userHomePage" component={UserHomePage} />
           <Route path='/searchResults' component={SearchResults} />
           <Route path="/signup" component={Signup} />
