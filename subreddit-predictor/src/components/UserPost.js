@@ -33,9 +33,8 @@ const UserPost = () => {
       .post('https://cors-anywhere.herokuapp.com/https://bwptphsp1ds.herokuapp.com/predict_subreddit', postInput)
       .then((res) => {
         console.log('Res in user post', res.data)
-        setPost(postInput)
+        setPost(res.data)
         setResults(res.data);
-        // push('/searchResults')
       })
       .catch((err) => {
         console.error(err.message, err.response);
@@ -44,7 +43,7 @@ const UserPost = () => {
 
   return (
     <>
-    {results.length === 0 ? 
+    {results.length === 0 ? (
 <Form onSubmit={handleSubmit} style={{ width: "40%", margin: "0 auto" }}>
         <FormGroup>
           <Label style={{ color: "white" }}>Title</Label>
@@ -66,14 +65,12 @@ const UserPost = () => {
         </FormGroup>
         <Button>Submit</Button>
       </Form>
-        
-      : 
+    ) : (
       <>
       <h1 style={{color: 'white'}}>Subreddit Prediction Results</h1>
       <p style={{color: 'white'}}>{JSON.stringify(results.subreddit)}</p>
       </>
-    }
-      
+    )}
     </>
   );
 };
