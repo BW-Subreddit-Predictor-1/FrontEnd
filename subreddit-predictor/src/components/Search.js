@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Label, Button, Modal } from "reactstrap";
-// import * as yup from "yup";
-import axios from 'axios';
+import { Form, Input, Button, Modal } from "reactstrap";
+import axios from "axios";
 
 const Search = () => {
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch ] = useState('');
-
-  const handleChange = e => {
+  const handleChange = (e) => {
     setSearch({
-      ...search, [e.target.name] : e.target.value
-    })
-  }
+      ...search,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const getPost = e => {
+  const getPost = (e) => {
     e.preventDefault();
-       axios
+    axios
       .get(`https://localhost:5000/api/post/${search}`)
-      .then(res => {
-        setSearch(res.data)
+      .then((res) => {
+        setSearch(res.data);
       })
-      .catch(err => {
-        console.error(err.message, err.response)
-      })
-  }
-
+      .catch((err) => {
+        console.error(err.message, err.response);
+      });
+  };
 
   return (
     <>
-      <Form style={{ width: "50%", margin: "0 auto" }}
-        onSubmit={getPost}
-      >
+      <Form style={{ width: "50%", margin: "0 auto" }} onSubmit={getPost}>
         <Input
           type="textarea"
           name="search"
@@ -38,8 +34,10 @@ const Search = () => {
           onChange={handleChange}
           restricted
         />
-        <div className='spacer'></div>
-        <Button className='searchButton' disabled={!search} onClick={Modal}>Search</Button>
+        <div className="spacer"></div>
+        <Button className="searchButton" disabled={!search} onClick={Modal}>
+          Search
+        </Button>
       </Form>
     </>
   );

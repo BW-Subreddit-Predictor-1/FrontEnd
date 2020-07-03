@@ -2,11 +2,10 @@ import React, { useState, useContext } from "react";
 import { Form, Label, Input, Button, FormGroup } from "reactstrap";
 import axiosWithAuth from "../utils/axiosWithAuth";
 import { RedditContext } from "../contexts/RedditContext";
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const UserPost = () => {
-
   const initialState = {
     title: "",
     body: "",
